@@ -11,7 +11,7 @@ namespace ElasticSearch.API.Extensions
 			var pool = new SingleNodePool(new Uri(elasticUrl!));
 			var settings = new ElasticsearchClientSettings(pool);
 			var client = new ElasticsearchClient(settings);
-			services.AddSingleton(client); //elastic firmasinin önerisi ioc kaydinin singleton olarak yapilmasi.
+			services.AddSingleton(client); //elastic firmasinin önerisi, ioc kaydinin singleton olarak yapilmasi..
 		}
 	}
 }
