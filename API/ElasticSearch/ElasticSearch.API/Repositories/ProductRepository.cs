@@ -4,7 +4,7 @@ using ElasticSearch.API.Models;
 namespace ElasticSearch.API.Repositories
 {
 	//bu projenin amaci elastic search uzerine yogunlasmak oldugu icin ntier yapmaya gerek yok
-	public class ProductRepository(ElasticsearchClient _elasticClient)
+	public class ProductRepository(ElasticsearchClient _elasticClient)//primary ctor DI
 	{
 		public async Task<Product?> SaveChangesAsync(Product newProduct)
 		{
