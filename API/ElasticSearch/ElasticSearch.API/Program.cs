@@ -1,4 +1,6 @@
 using ElasticSearch.API.Extensions;
+using ElasticSearch.API.Repositories;
+using ElasticSearch.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,14 +10,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddElasticExt(builder.Configuration);
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ProductRepository>();
+
 var app = builder.Build();
 
-builder.Services.AddElasticExt(builder.Configuration);
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

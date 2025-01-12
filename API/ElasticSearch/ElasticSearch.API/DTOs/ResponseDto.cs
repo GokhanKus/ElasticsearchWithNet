@@ -10,7 +10,7 @@ namespace ElasticSearch.API.DTOs
 
 
 		//factory design pattern - static Factory Method
-		public static ResponseDto<T> Success(T? data, HttpStatusCode statusCode)
+		public static ResponseDto<T> Success(T? data, HttpStatusCode statusCode = HttpStatusCode.OK)
 		{
 			return new ResponseDto<T> { Data = data, StatusCode = statusCode };
 		}
