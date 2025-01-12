@@ -10,7 +10,8 @@ namespace ElasticSearch.API.Repositories
 		{
 			newProduct.Created = DateTime.Now;
 
-			var response = await _elasticClient.IndexAsync(newProduct, x => x.Index("products"));//elsearch'te Indexlemek = Savechanges 
+			var response = await _elasticClient.IndexAsync(newProduct, x => x.Index("products"));//elsearch'te Indexlemek = Savechanges
+			//.Id(Guid.NewGuid().ToString()) diyerek id biz de atayabiliriz ya da bu islem elasticsearch'e birakilabilir
 
 			if (!response.IsValidResponse) return null; //kayit islemi basarili olmazsa,, !IsSuccess() ile hata da firlatilabilir..
 
