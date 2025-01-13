@@ -29,11 +29,11 @@ namespace ElasticSearch.API.Repositories
 			return response.IsValidResponse;
 		}
 
-		public async Task<bool> DeleteAsync(string id)
+		public async Task<DeleteResponse> DeleteAsync(string id)
 		{
 			var response = await _elasticClient.DeleteAsync<Product>(id, s => s.Index(indexName));
 
-			return response.IsValidResponse;
+			return response;
 		}
 		public async Task<ImmutableList<Product>> GetAllAsync()
 		{

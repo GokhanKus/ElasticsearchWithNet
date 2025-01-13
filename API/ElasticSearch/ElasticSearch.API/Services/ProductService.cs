@@ -1,12 +1,11 @@
-﻿using ElasticSearch.API.DTOs;
-using ElasticSearch.API.Models;
+﻿using Elastic.Clients.Elasticsearch;
+using ElasticSearch.API.DTOs;
 using ElasticSearch.API.Repositories;
-using System.Collections.Immutable;
 using System.Net;
 
 namespace ElasticSearch.API.Services
 {
-	public class ProductService(ProductRepository _productRepository)
+	public class ProductService(ProductRepository _productRepository,ILogger<ProductService> _logger)
 	{
 		public async Task<ResponseDto<ProductDto>> SaveChangesAsync(ProductCreateDto request)
 		{
@@ -27,13 +26,21 @@ namespace ElasticSearch.API.Services
 				ResponseDto<bool>.Success(isSuccess, HttpStatusCode.NoContent) :
 				ResponseDto<bool>.Fail("an error occured during update", HttpStatusCode.InternalServerError);
 		}
-		public async Task<ResponseDto<bool>> DeleteAsync(string id)
+		public async Task<ResponseDto<DeleteResponse>> DeleteAsync(string id)
 		{
-			var isSuccess = await _productRepository.DeleteAsync(id);
+			var deleteResponse = await _productRepository.DeleteAsync(id);
 
-			return isSuccess == true ?
-				ResponseDto<bool>.Success(isSuccess, HttpStatusCode.NoContent) :
-				ResponseDto<bool>.Fail("no product found", HttpStatusCode.NotFound);
+			if(!deleteResponse.IsValidResponse && deleteResponse.Result == Result.NotFound)
+				return ResponseDto<DeleteResponse>.Fail("no product found", HttpStatusCode.NotFound);
+			
+			if (!deleteResponse.IsValidResponse)
+			{
+				_logger.LogError(deleteResponse.ElasticsearchServerError?.Error?.Reason ?? "Unknown Error");
+
+				return ResponseDto<DeleteResponse>.Fail("an error occured", HttpStatusCode.InternalServerError);
+			}
+
+			return ResponseDto<DeleteResponse>.Success(deleteResponse, HttpStatusCode.NoContent);
 		}
 		public async Task<ResponseDto<List<ProductDto>>> GetAllAsync()
 		{
