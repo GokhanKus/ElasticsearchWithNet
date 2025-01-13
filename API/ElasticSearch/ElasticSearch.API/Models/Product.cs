@@ -18,9 +18,9 @@ namespace ElasticSearch.API.Models
 		//auto mapper kullanmak yerine bu sekilde farklı yaklasimlar da olabilir DDD...
 		public ProductDto CreateDto()
 		{
-			return Feature is null ?  
+			return Feature is null ?
 				new ProductDto(Id, Name, Price, Stock, null) :
-				new ProductDto(Id, Name, Price, Stock, new ProductFeatureDto(Feature.Width, Feature.Height, Feature.Color));
+				new ProductDto(Id, Name, Price, Stock, new ProductFeatureDto(Feature.Width, Feature.Height, Feature.Color.ToString() ?? ""));
 		}
 	}
 }

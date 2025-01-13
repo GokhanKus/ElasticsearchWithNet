@@ -17,8 +17,15 @@ namespace ElasticSearch.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllAsync()
 		{
-			var products = await _productService.GetAllAsync();
-			return CreateActionResult(products);
+			var productList = await _productService.GetAllAsync();
+			return CreateActionResult(productList);
+		}
+
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetByIdAsync(string id)
+		{
+			var productDto = await _productService.GetByIdAsync(id);
+			return CreateActionResult(productDto);
 		}
 	}
 }

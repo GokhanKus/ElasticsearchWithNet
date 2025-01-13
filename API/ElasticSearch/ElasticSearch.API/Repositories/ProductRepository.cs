@@ -23,13 +23,24 @@ namespace ElasticSearch.API.Repositories
 		}
 		public async Task<ImmutableList<Product>> GetAllAsync()
 		{
-			var result = await _elasticClient.SearchAsync<Product>(s => s.Index(indexName).Query(new MatchAllQuery())); //From().Size() belirtilebilir
+			var response = await _elasticClient.SearchAsync<Product>(s => s.Index(indexName).Query(new MatchAllQuery())); //From().Size() belirtilebilir
 
-			foreach (var hit in result.Hits) 
+			//metadatadan gelen idleri bizim id alanimiza mapliyoruz
+			foreach (var hit in response.Hits)
 				hit.Source.Id = hit.Id!;
-		
-			
-			return result.Documents.ToImmutableList();
+
+			return response.Documents.ToImmutableList();
+		}
+		public async Task<Product?> GetByIdAsync(string id)
+		{
+			var response = await _elasticClient.GetAsync<Product>(id, s => s.Index(indexName));
+
+			if (!response.IsValidResponse)
+				return null;
+
+			response.Source.Id = response.Id;
+
+			return response.Source;
 		}
 	}
 }
