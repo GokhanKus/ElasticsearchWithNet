@@ -24,8 +24,16 @@ namespace ElasticSearch.API.Services
 			var isSuccess = await _productRepository.UpdateAsync(productDto);
 
 			return isSuccess == true ?
-				ResponseDto<bool>.Success(isSuccess, HttpStatusCode.OK) :
+				ResponseDto<bool>.Success(isSuccess, HttpStatusCode.NoContent) :
 				ResponseDto<bool>.Fail("an error occured during update", HttpStatusCode.InternalServerError);
+		}
+		public async Task<ResponseDto<bool>> DeleteAsync(string id)
+		{
+			var isSuccess = await _productRepository.DeleteAsync(id);
+
+			return isSuccess == true ?
+				ResponseDto<bool>.Success(isSuccess, HttpStatusCode.NoContent) :
+				ResponseDto<bool>.Fail("no product found", HttpStatusCode.NotFound);
 		}
 		public async Task<ResponseDto<List<ProductDto>>> GetAllAsync()
 		{
@@ -47,5 +55,6 @@ namespace ElasticSearch.API.Services
 
 			return ResponseDto<ProductDto>.Success(productDto, HttpStatusCode.OK);
 		}
+		
 	}
 }

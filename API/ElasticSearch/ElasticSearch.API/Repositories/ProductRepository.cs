@@ -22,6 +22,19 @@ namespace ElasticSearch.API.Repositories
 			newProduct.Id = response.Id;
 			return newProduct;
 		}
+		public async Task<bool> UpdateAsync(ProductUpdateDto productDto)
+		{
+			var response = await _elasticClient.UpdateAsync<Product, ProductUpdateDto>(productDto.Id, s => s.Index(indexName).Doc(productDto));
+
+			return response.IsValidResponse;
+		}
+
+		public async Task<bool> DeleteAsync(string id)
+		{
+			var response = await _elasticClient.DeleteAsync<Product>(id, s => s.Index(indexName));
+
+			return response.IsValidResponse;
+		}
 		public async Task<ImmutableList<Product>> GetAllAsync()
 		{
 			var response = await _elasticClient.SearchAsync<Product>(s => s.Index(indexName).Query(new MatchAllQuery())); //From().Size() belirtilebilir
@@ -42,12 +55,6 @@ namespace ElasticSearch.API.Repositories
 			response.Source.Id = response.Id;
 
 			return response.Source;
-		}
-		public async Task<bool> UpdateAsync(ProductUpdateDto productDto)
-		{
-			var response = await _elasticClient.UpdateAsync<Product,ProductUpdateDto>(productDto.Id, s => s.Index(indexName).Doc(productDto));
-
-			return response.IsValidResponse;
 		}
 	}
 }

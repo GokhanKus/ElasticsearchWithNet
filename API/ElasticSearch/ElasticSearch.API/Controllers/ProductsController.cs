@@ -14,10 +14,17 @@ namespace ElasticSearch.API.Controllers
 			return CreateActionResult(product);
 		}
 
-		[HttpPut()]
+		[HttpPut]
 		public async Task<IActionResult> UpdateAsync(ProductUpdateDto request)
 		{
 			var product = await _productService.UpdateAsync(request);
+			return CreateActionResult(product);
+		}
+		
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeleteAsync(string id)
+		{
+			var product = await _productService.DeleteAsync(id);
 			return CreateActionResult(product);
 		}
 
