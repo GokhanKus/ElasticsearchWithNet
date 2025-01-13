@@ -13,5 +13,12 @@ namespace ElasticSearch.API.Controllers
 			var product = await _productService.SaveChangesAsync(request);
 			return CreateActionResult(product);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetAllAsync()
+		{
+			var products = await _productService.GetAllAsync();
+			return CreateActionResult(products);
+		}
 	}
 }
