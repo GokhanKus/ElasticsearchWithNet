@@ -19,6 +19,14 @@ namespace ElasticSearch.API.Services
 			var productDto = response.CreateDto();
 			return ResponseDto<ProductDto>.Success(productDto, HttpStatusCode.Created);
 		}
+		public async Task<ResponseDto<bool>> UpdateAsync(ProductUpdateDto productDto)
+		{
+			var isSuccess = await _productRepository.UpdateAsync(productDto);
+
+			return isSuccess == true ?
+				ResponseDto<bool>.Success(isSuccess, HttpStatusCode.OK) :
+				ResponseDto<bool>.Fail("an error occured during update", HttpStatusCode.InternalServerError);
+		}
 		public async Task<ResponseDto<List<ProductDto>>> GetAllAsync()
 		{
 			var products = await _productRepository.GetAllAsync();

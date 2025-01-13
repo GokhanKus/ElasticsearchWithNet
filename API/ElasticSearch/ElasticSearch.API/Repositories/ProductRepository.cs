@@ -1,5 +1,6 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
+using ElasticSearch.API.DTOs;
 using ElasticSearch.API.Models;
 using System.Collections.Immutable;
 
@@ -41,6 +42,12 @@ namespace ElasticSearch.API.Repositories
 			response.Source.Id = response.Id;
 
 			return response.Source;
+		}
+		public async Task<bool> UpdateAsync(ProductUpdateDto productDto)
+		{
+			var response = await _elasticClient.UpdateAsync<Product,ProductUpdateDto>(productDto.Id, s => s.Index(indexName).Doc(productDto));
+
+			return response.IsValidResponse;
 		}
 	}
 }
