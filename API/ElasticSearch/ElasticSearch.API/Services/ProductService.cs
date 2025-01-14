@@ -5,7 +5,7 @@ using System.Net;
 
 namespace ElasticSearch.API.Services
 {
-	public class ProductService(ProductRepository _productRepository,ILogger<ProductService> _logger)
+	public class ProductService(ProductRepository _productRepository, ILogger<ProductService> _logger)
 	{
 		public async Task<ResponseDto<ProductDto>> SaveChangesAsync(ProductCreateDto request)
 		{
@@ -30,12 +30,13 @@ namespace ElasticSearch.API.Services
 		{
 			var deleteResponse = await _productRepository.DeleteAsync(id);
 
-			if(!deleteResponse.IsValidResponse && deleteResponse.Result == Result.NotFound)
+			if (!deleteResponse.IsValidResponse && deleteResponse.Result == Result.NotFound)
 				return ResponseDto<DeleteResponse>.Fail("no product found", HttpStatusCode.NotFound);
-			
+
 			if (!deleteResponse.IsValidResponse)
 			{
-				_logger.LogError(deleteResponse.ElasticsearchServerError?.Error?.Reason ?? "Unknown Error");
+				deleteResponse.TryGetOriginalException(out Exception? exception);
+				_logger.LogError(exception, deleteResponse.ElasticsearchServerError?.Error?.Reason ?? "Unknown Error");
 
 				return ResponseDto<DeleteResponse>.Fail("an error occured", HttpStatusCode.InternalServerError);
 			}
@@ -62,6 +63,6 @@ namespace ElasticSearch.API.Services
 
 			return ResponseDto<ProductDto>.Success(productDto, HttpStatusCode.OK);
 		}
-		
+
 	}
 }

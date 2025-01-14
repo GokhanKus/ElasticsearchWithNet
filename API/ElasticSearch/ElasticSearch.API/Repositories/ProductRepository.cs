@@ -17,7 +17,7 @@ namespace ElasticSearch.API.Repositories
 			var response = await _elasticClient.IndexAsync(newProduct, x => x.Index(indexName));//elsearch'te Indexlemek = Savechanges
 																								//.Id(Guid.NewGuid().ToString()) diyerek id biz de atayabiliriz ya da bu islem elasticsearch'e birakilabilir
 
-			if (!response.IsValidResponse) return null; //kayit islemi basarili olmazsa,, !IsSuccess() ile hata da firlatilabilir..
+			if (!response.IsSuccess()) return null; //kayit islemi basarili olmazsa,, !IsSuccess() ile hata da firlatilabilir..
 
 			newProduct.Id = response.Id;
 			return newProduct;
@@ -26,7 +26,7 @@ namespace ElasticSearch.API.Repositories
 		{
 			var response = await _elasticClient.UpdateAsync<Product, ProductUpdateDto>(productDto.Id, s => s.Index(indexName).Doc(productDto));
 
-			return response.IsValidResponse;
+			return response.IsSuccess();
 		}
 
 		public async Task<DeleteResponse> DeleteAsync(string id)
@@ -49,7 +49,7 @@ namespace ElasticSearch.API.Repositories
 		{
 			var response = await _elasticClient.GetAsync<Product>(id, s => s.Index(indexName));
 
-			if (!response.IsValidResponse)
+			if (!response.IsSuccess())
 				return null;
 
 			response.Source.Id = response.Id;
