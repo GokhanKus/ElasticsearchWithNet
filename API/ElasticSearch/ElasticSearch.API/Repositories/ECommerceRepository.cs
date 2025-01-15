@@ -1,4 +1,5 @@
 ﻿using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.Nodes;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using ElasticSearch.API.Models.ECommerceModel;
 using System.Collections.Immutable;
@@ -23,10 +24,43 @@ namespace ElasticSearch.API.Repositories
 			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
 			.Query(q => q.Term(t => t.Field(f => f.CustomerFirstName.Suffix("keyword")).Value(customerFirstName))));
 
-			foreach (var hit in results.Hits)
-				hit.Source.Id = hit.Id!;
+			FillIdFields(results);
+			
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> TermsQuery(List<string> customerFirstNameList)
+		{
+			List<FieldValue> terms = new List<FieldValue>();
+
+			customerFirstNameList.ForEach(x =>
+			{
+				terms.Add(x);
+			});
+
+			//1st way
+			//var termQuery = new TermsQuery()
+			//{
+			//	Field = "customer_first_name.keyword",
+			//	Terms = new TermsQueryField(terms.AsReadOnly())
+			//};
+			//var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName).Query(termQuery).Size(30));
+
+			//2nd way
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName).Size(50)
+			.Query(q => q.Terms(t => t
+			.Field(f => f.CustomerFirstName.Suffix("keyword"))
+			.Terms(new TermsQueryField(terms.AsReadOnly())))));
+			
+
+			FillIdFields(results);
 
 			return results.Documents.ToImmutableList();
+		}
+
+		private void FillIdFields(SearchResponse<ECommerce> results)
+		{
+			foreach (var hit in results.Hits)
+				hit.Source.Id = hit.Id!;
 		}
 	}
 }
