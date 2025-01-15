@@ -35,5 +35,12 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.RangeQueryAsync(minTaxfulTotalPrice, maxTaxfulTotalPrice);
 			return Ok(results);
 		}
+		
+		[HttpGet]
+		public async Task<IActionResult> MatchAllQueryAsync()
+		{
+			var results = await _eCommerceRepository.MatchAllQueryAsync();
+			return Ok(results);
+		}
 	}
 }

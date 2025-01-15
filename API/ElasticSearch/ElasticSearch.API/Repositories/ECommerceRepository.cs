@@ -80,6 +80,16 @@ namespace ElasticSearch.API.Repositories
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
+		public async Task<ImmutableList<ECommerce>> MatchAllQueryAsync()
+		{
+			//butun datalar
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s
+				.Index(indexName)
+				.Query(q => q.MatchAll(_ => { })));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
 
 		private void FillIdFields(SearchResponse<ECommerce> results)
 		{
