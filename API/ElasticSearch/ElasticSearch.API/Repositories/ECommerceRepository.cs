@@ -67,6 +67,19 @@ namespace ElasticSearch.API.Repositories
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
+		public async Task<ImmutableList<ECommerce>> RangeQueryAsync(double minTaxfulTotalPrice, double maxTaxfulTotalPrice)
+		{
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName).Size(50)
+			.Query(q => q
+			.Range(r => r
+			.NumberRange(nr => nr
+			.Field(f => f.TaxfulTotalPrice)
+			.Gte(minTaxfulTotalPrice)
+			.Lte(maxTaxfulTotalPrice)))));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
 
 		private void FillIdFields(SearchResponse<ECommerce> results)
 		{
