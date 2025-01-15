@@ -1,4 +1,5 @@
 ﻿using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.Nodes;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using ElasticSearch.API.Models.ECommerceModel;
 using System.Collections.Immutable;
@@ -100,7 +101,19 @@ namespace ElasticSearch.API.Repositories
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
+		public async Task<ImmutableList<ECommerce>> WildCardQueryAsync(string customerFirstName)
+		{
+			//ornegin Ed?ie yazinca Eddie olanlari getirir
+			//ya da E*ie yazarsak Eddie olanlari getirir
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+				.Query(q => q.Wildcard(w =>w
+				.Field(f => f.CustomerFirstName
+				.Suffix("keyword"))
+				.Wildcard(customerFirstName))));
 
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
 		private void FillIdFields(SearchResponse<ECommerce> results)
 		{
 			foreach (var hit in results.Hits)
