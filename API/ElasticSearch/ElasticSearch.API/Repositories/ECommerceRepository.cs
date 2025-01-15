@@ -114,6 +114,20 @@ namespace ElasticSearch.API.Repositories
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
+		public async Task<ImmutableList<ECommerce>> FuzzyQueryAsync(string customerFullName)
+		{
+			//clientten gelen 2 harf hatasina kadar tolere edebilir
+			//ornegin Olivre Lov yazdigimizda Oliver Love kisisi gelir
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+				.Query(q => q.Fuzzy(fu =>fu
+				.Field(f => f.CustomerFullName.Suffix("keyword")).Value(customerFullName)
+				.Fuzziness(new Fuzziness(2))))
+				.Sort(sort => sort
+				.Field(f => f.TaxfulTotalPrice, new FieldSort() { Order = SortOrder.Desc })));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
 		private void FillIdFields(SearchResponse<ECommerce> results)
 		{
 			foreach (var hit in results.Hits)
