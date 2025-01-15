@@ -1,5 +1,4 @@
 ﻿using Elastic.Clients.Elasticsearch;
-using Elastic.Clients.Elasticsearch.Nodes;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using ElasticSearch.API.Models.ECommerceModel;
 using System.Collections.Immutable;
@@ -25,7 +24,7 @@ namespace ElasticSearch.API.Repositories
 			.Query(q => q.Term(t => t.Field(f => f.CustomerFirstName.Suffix("keyword")).Value(customerFirstName))));
 
 			FillIdFields(results);
-			
+
 			return results.Documents.ToImmutableList();
 		}
 		public async Task<ImmutableList<ECommerce>> TermsQueryAsync(List<string> customerFirstNameList)
@@ -50,7 +49,7 @@ namespace ElasticSearch.API.Repositories
 			.Query(q => q.Terms(t => t
 			.Field(f => f.CustomerFirstName.Suffix("keyword"))
 			.Terms(new TermsQueryField(terms.AsReadOnly())))));
-			
+
 			FillIdFields(results);
 
 			return results.Documents.ToImmutableList();
@@ -85,6 +84,17 @@ namespace ElasticSearch.API.Repositories
 			//butun datalar
 			var results = await _elasticClient.SearchAsync<ECommerce>(s => s
 				.Index(indexName)
+				.Query(q => q.MatchAll(_ => { })));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> PaginationQueryAsync(int page, int pageSize)
+		{
+			var pageFrom = (page - 1) * pageSize;
+
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s
+				.Index(indexName).From(pageFrom).Size(pageSize)
 				.Query(q => q.MatchAll(_ => { })));
 
 			FillIdFields(results);
