@@ -9,16 +9,23 @@ namespace ElasticSearch.API.Controllers
 	public class ECommerceController(ECommerceRepository _eCommerceRepository): ControllerBase
 	{
 		[HttpGet]
-		public async Task<IActionResult> TermQuery(string customerFirstName)
+		public async Task<IActionResult> TermQueryAsync(string customerFirstName)
 		{
-			var results = await _eCommerceRepository.TermQuery(customerFirstName);
+			var results = await _eCommerceRepository.TermQueryAsync(customerFirstName);
 			return Ok(results);
 		}
 		
 		[HttpPost]
-		public async Task<IActionResult> TermsQuery(List<string> customerFirstNameList)
+		public async Task<IActionResult> TermsQueryAsync(List<string> customerFirstNameList)
 		{
-			var results = await _eCommerceRepository.TermsQuery(customerFirstNameList);
+			var results = await _eCommerceRepository.TermsQueryAsync(customerFirstNameList);
+			return Ok(results);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> PrefixQueryAsync(string customerFullNamePrefix)
+		{
+			var results = await _eCommerceRepository.PrefixQueryAsync(customerFullNamePrefix);
 			return Ok(results);
 		}
 	}

@@ -9,7 +9,7 @@ namespace ElasticSearch.API.Repositories
 	public class ECommerceRepository(ElasticsearchClient _elasticClient)
 	{
 		private const string indexName = "kibana_sample_data_ecommerce";
-		public async Task<ImmutableList<ECommerce>> TermQuery(string customerFirstName)
+		public async Task<ImmutableList<ECommerce>> TermQueryAsync(string customerFirstName)
 		{
 			#region 1st way, 3rd way
 			//1st way
@@ -28,7 +28,7 @@ namespace ElasticSearch.API.Repositories
 			
 			return results.Documents.ToImmutableList();
 		}
-		public async Task<ImmutableList<ECommerce>> TermsQuery(List<string> customerFirstNameList)
+		public async Task<ImmutableList<ECommerce>> TermsQueryAsync(List<string> customerFirstNameList)
 		{
 			List<FieldValue> terms = new List<FieldValue>();
 
@@ -51,9 +51,20 @@ namespace ElasticSearch.API.Repositories
 			.Field(f => f.CustomerFirstName.Suffix("keyword"))
 			.Terms(new TermsQueryField(terms.AsReadOnly())))));
 			
-
 			FillIdFields(results);
 
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> PrefixQueryAsync(string customerFullNamePrefix)
+		{
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+			.Query(q => q
+			.Prefix(p => p
+			.Field(f => f.CustomerFullName
+			.Suffix("keyword"))
+			.Value(customerFullNamePrefix))));
+
+			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
 
