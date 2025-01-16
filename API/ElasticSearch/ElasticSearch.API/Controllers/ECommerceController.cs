@@ -6,7 +6,7 @@ namespace ElasticSearch.API.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class ECommerceController(ECommerceRepository _eCommerceRepository): ControllerBase
+	public class ECommerceController(ECommerceRepository _eCommerceRepository) : ControllerBase
 	{
 		[HttpGet]
 		public async Task<IActionResult> TermQueryAsync(string customerFirstName)
@@ -14,7 +14,7 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.TermQueryAsync(customerFirstName);
 			return Ok(results);
 		}
-		
+
 		[HttpPost]
 		public async Task<IActionResult> TermsQueryAsync(List<string> customerFirstNameList)
 		{
@@ -28,14 +28,14 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.PrefixQueryAsync(customerFullNamePrefix);
 			return Ok(results);
 		}
-		
+
 		[HttpGet]
 		public async Task<IActionResult> RangeQueryAsync(double minTaxfulTotalPrice, double maxTaxfulTotalPrice)
 		{
 			var results = await _eCommerceRepository.RangeQueryAsync(minTaxfulTotalPrice, maxTaxfulTotalPrice);
 			return Ok(results);
 		}
-		
+
 		[HttpGet]
 		public async Task<IActionResult> MatchAllQueryAsync()
 		{
@@ -46,10 +46,10 @@ namespace ElasticSearch.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> PaginationQueryAsync(int page, int pageSize)
 		{
-			var results = await _eCommerceRepository.PaginationQueryAsync(page,pageSize);
+			var results = await _eCommerceRepository.PaginationQueryAsync(page, pageSize);
 			return Ok(results);
 		}
-		
+
 		[HttpGet]
 		public async Task<IActionResult> WildCardQueryAsync(string customerFirstName)
 		{
@@ -70,7 +70,7 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.MatchQueryFullTextAsync(categoryName);
 			return Ok(results);
 		}
-		
+
 		[HttpGet]
 		public async Task<IActionResult> MatchBoolPrefixFullTextAsync(string customerFullName)
 		{
@@ -84,11 +84,18 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.MatchPhraseQueryFullTextAsync(customerFullName);
 			return Ok(results);
 		}
-		
+
 		[HttpGet]
 		public async Task<IActionResult> MatchPhrasePrefixQueryFullTextAsync(string customerFullName)
 		{
 			var results = await _eCommerceRepository.MatchPhrasePrefixQueryFullTextAsync(customerFullName);
+			return Ok(results);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> CompoundQueryExampleOneAsync(string cityName, double taxfulTotalPrice, string categoryName, string manufacturer)
+		{
+			var results = await _eCommerceRepository.CompoundQueryExampleOneAsync(cityName, taxfulTotalPrice, categoryName, manufacturer);
 			return Ok(results);
 		}
 	}

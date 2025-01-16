@@ -175,12 +175,50 @@ namespace ElasticSearch.API.Repositories
 		{
 			//Autocomplete (tamamlama) özelliği için kullanılır. Cümlenin başlangıcına göre arama yapar.
 			//orn sonya sm yazdığımda sonya smith gelir
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+			.Query(q => q
+			.MatchPhrasePrefix(m => m
+			.Field(f => f.CustomerFullName)
+			.Query(customerFullName))));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> MatchPhrasePrefixQueryByProductNameFullTextAsync(string productName)
+		{
 			var results = await _elasticClient.SearchAsync<ECommerce>(s=>s.Index(indexName)
 			.Query(q=>q
 			.MatchPhrasePrefix(m=>m
-			.Field(f=>f.CustomerFullName)
-			.Query(customerFullName))));
+			.Field("products.product_name")
+			.Query(productName))));
 
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> CompoundQueryExampleOneAsync(string cityName, double taxfulTotalPrice, string categoryName, string manufacturer)
+		{
+			//cityname: New York olan, taxfulTotalPrice:100'den küçük olmayan,  categoryName: Women's clothing olan, manufacturer: Tigress Enterprises olan kayitlari getir.
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+				.Size(1000).Query(q => q
+					.Bool(b => b
+						.Must(m => m
+							.Term(t => t
+							.Field("geoip.city_name")
+							.Value(cityName)))
+						.MustNot(mn => mn
+							.Range(r => r
+							.NumberRange(nr => nr
+							.Field(f => f.TaxfulTotalPrice)
+							.Lte(taxfulTotalPrice))))
+						.Should(s => s.Term(t => t
+							.Field(f => f.Category.Suffix("keyword"))
+							.Value(categoryName)))
+						.Filter(f => f
+							.Term(t => t
+							.Field("manufacturer.keyword")
+							.Value(manufacturer))))));
+
+			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
 		private void FillIdFields(SearchResponse<ECommerce> results)
