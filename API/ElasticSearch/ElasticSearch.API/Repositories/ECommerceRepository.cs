@@ -145,6 +145,19 @@ namespace ElasticSearch.API.Repositories
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
+		public async Task<ImmutableList<ECommerce>> MatchBoolPrefixFullTextAsync(string customerFullName)
+		{
+			//üstteki Match queryden farklı olarak burada tam bir kelimeyi yazmak zorunda değiliz ilk harflerini yazarsak onla başlayanları getirir. orn
+			//sorgu olarak "abiga ha" yazarsam sonuc olarak Abigail Hampton, Kamal Hale, Yasmine Haynes gibi isimleri getirir
+			var results = await _elasticClient.SearchAsync<ECommerce>(s=>s.Index(indexName)
+			.Query(q=>q
+			.MatchBoolPrefix(m=>m
+			.Field(f=>f.CustomerFullName)
+			.Query(customerFullName))));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
 		private void FillIdFields(SearchResponse<ECommerce> results)
 		{
 			foreach (var hit in results.Hits)
