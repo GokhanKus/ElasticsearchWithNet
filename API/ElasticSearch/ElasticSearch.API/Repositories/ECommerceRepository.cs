@@ -9,6 +9,8 @@ namespace ElasticSearch.API.Repositories
 	public class ECommerceRepository(ElasticsearchClient _elasticClient)
 	{
 		private const string indexName = "kibana_sample_data_ecommerce";
+
+		//TERM LEVEL QUERIES
 		public async Task<ImmutableList<ECommerce>> TermQueryAsync(string customerFirstName)
 		{
 			#region 1st way, 3rd way
@@ -124,6 +126,21 @@ namespace ElasticSearch.API.Repositories
 				.Fuzziness(new Fuzziness(2))))
 				.Sort(sort => sort
 				.Field(f => f.TaxfulTotalPrice, new FieldSort() { Order = SortOrder.Desc })));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
+
+		//FULL-TEXT QUERIES
+		public async Task<ImmutableList<ECommerce>> MatchQueryFullTextAsync(string categoryName)
+		{
+			//orn Men's Clothing (no matter case sensitive) yazdigimizda operator and ise icerisinde "Men's "Clothing" geçen 
+			//kategorileri getirir operator or olsaydı "Men's" ya da "Clothing" gecenleri getirecekti 
+			var results = await _elasticClient.SearchAsync<ECommerce>(s=>s.Index(indexName)
+			.Query(q=>q
+			.Match(m=>m
+			.Field(f=>f.Category)
+			.Query(categoryName).Operator(Operator.And))));
 
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();

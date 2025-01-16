@@ -63,5 +63,12 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.FuzzyQueryAsync(customerFullName);
 			return Ok(results);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> MatchQueryFullTextAsync(string categoryName)
+		{
+			var results = await _eCommerceRepository.MatchQueryFullTextAsync(categoryName);
+			return Ok(results);
+		}
 	}
 }
