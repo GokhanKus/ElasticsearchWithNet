@@ -98,5 +98,12 @@ namespace ElasticSearch.API.Controllers
 			var results = await _eCommerceRepository.CompoundQueryExampleOneAsync(cityName, taxfulTotalPrice, categoryName, manufacturer);
 			return Ok(results);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> CompoundQueryExampleTwoAsync(string customerFullName)
+		{
+			var results = await _eCommerceRepository.CompoundQueryExampleTwoAsync(customerFullName);
+			return Ok(results);
+		}
 	}
 }

@@ -221,6 +221,30 @@ namespace ElasticSearch.API.Repositories
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
+
+		public async Task<ImmutableList<ECommerce>> CompoundQueryExampleTwoAsync(string customerFullName)
+		{
+			//ya match query ya da prefix query saglanacak 
+			//orn. ya tam eşleşecek ya da o sorgulanan harflerle başlayan veriler gelecek
+
+			//1st way
+			//var result = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+			//	.Size(1000).Query(q => q.MatchPhrasePrefix(m => m.Field(f => f.CustomerFullName).Query(customerFullName))));
+
+			//2nd way
+			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
+				.Size(1000).Query(q => q
+					.Bool(b => b
+						.Should(m => m
+							.Match(m => m
+								.Field(f => f.CustomerFullName)
+								.Query(customerFullName))
+							.Prefix(p => p
+								.Field(f => f.CustomerFullName.Suffix("keyword"))
+								.Value(customerFullName))))));
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
 		private void FillIdFields(SearchResponse<ECommerce> results)
 		{
 			foreach (var hit in results.Hits)
