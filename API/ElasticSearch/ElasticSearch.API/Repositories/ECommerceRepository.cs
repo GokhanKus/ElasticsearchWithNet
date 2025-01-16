@@ -1,6 +1,7 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.Nodes;
 using Elastic.Clients.Elasticsearch.QueryDsl;
+using ElasticSearch.API.Models;
 using ElasticSearch.API.Models.ECommerceModel;
 using System.Collections.Immutable;
 
@@ -156,6 +157,30 @@ namespace ElasticSearch.API.Repositories
 			.Query(customerFullName))));
 
 			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> MatchPhraseQueryFullTextAsync(string customerFullName)
+		{
+			//orn. sultan al yazdığımda fullname kısmında "sultan al"'i bir bütün olarak alıp icinde bu ifade gecenleri getirecek
+			var results = await _elasticClient.SearchAsync<ECommerce>(s=>s.Index(indexName)
+			.Query(q=>q
+			.MatchPhrase(m=>m
+			.Field(f=>f.CustomerFullName)
+			.Query(customerFullName))));
+
+			FillIdFields(results);
+			return results.Documents.ToImmutableList();
+		}
+		public async Task<ImmutableList<ECommerce>> MatchPhrasePrefixQueryFullTextAsync(string customerFullName)
+		{
+			//Autocomplete (tamamlama) özelliği için kullanılır. Cümlenin başlangıcına göre arama yapar.
+			//orn sonya sm yazdığımda sonya smith gelir
+			var results = await _elasticClient.SearchAsync<ECommerce>(s=>s.Index(indexName)
+			.Query(q=>q
+			.MatchPhrasePrefix(m=>m
+			.Field(f=>f.CustomerFullName)
+			.Query(customerFullName))));
+
 			return results.Documents.ToImmutableList();
 		}
 		private void FillIdFields(SearchResponse<ECommerce> results)
