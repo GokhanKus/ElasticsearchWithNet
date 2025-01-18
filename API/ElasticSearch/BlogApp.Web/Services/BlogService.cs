@@ -19,10 +19,20 @@ namespace BlogApp.Web.Services
 			var isCreatedBlog = await _blogRepository.SaveChangesAsync(blog);
 			return isCreatedBlog != null;
 		}
-		public async Task<List<Blog>> SearchAsync(string searchText)
+		public async Task<List<BlogViewModel>> SearchAsync(string searchText)
 		{
 			var filteredBlogList = await _blogRepository.SearchAsync(searchText);
-			return filteredBlogList;
+			var blogViewModels = filteredBlogList.Select(blog => new BlogViewModel
+			{
+				Id = blog.Id,
+				Title = blog.Title,
+				Content = blog.Content,
+				Created = blog.Created.ToShortDateString(),
+				Tags = string.Join(",",blog.Tags),
+				UserId = blog.UserId.ToString(),
+			}).ToList();
+
+			return blogViewModels;
 		}
 	}
 }

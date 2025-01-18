@@ -26,14 +26,15 @@ namespace BlogApp.Web.Controllers
 			return RedirectToAction(nameof(Save));
 		}
 
-		public IActionResult Search()
+		public async Task<IActionResult> Search()
 		{
-			return View(new List<Blog>());
+			return View(await _blogService.SearchAsync(string.Empty));
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Search(string searchText)
 		{
+			ViewBag.searchText = searchText;
 			var filteredBlogList = await _blogService.SearchAsync(searchText);
 			return View(filteredBlogList);
 		}
