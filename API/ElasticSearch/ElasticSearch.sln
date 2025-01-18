@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch.API", "ElasticSearch.API\ElasticSearch.API.csproj", "{B85A9B68-282C-42F0-A998-6CD533E87645}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.Web", "BlogApp.Web\BlogApp.Web.csproj", "{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B85A9B68-282C-42F0-A998-6CD533E87645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B85A9B68-282C-42F0-A998-6CD533E87645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B85A9B68-282C-42F0-A998-6CD533E87645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
