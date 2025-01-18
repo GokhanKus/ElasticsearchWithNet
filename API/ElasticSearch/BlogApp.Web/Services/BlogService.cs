@@ -6,13 +6,13 @@ namespace BlogApp.Web.Services
 {
 	public class BlogService(BlogRepository _blogRepository)
 	{
-		public async Task<bool> SaveIndex(BlogCreateViewModel blogCreateModel)
+		public async Task<bool> SaveIndexAsync(BlogCreateViewModel blogCreateModel)
 		{
 			var blog = new Blog
 			{
 				Title = blogCreateModel.Title,
 				Content = blogCreateModel.Content,
-				Tags = blogCreateModel.Tags.ToArray(),
+				Tags = blogCreateModel.Tags.Split(","),
 				UserId = Guid.NewGuid(),
 			};
 			var isCreatedBlog = await _blogRepository.SaveChangesAsync(blog);
