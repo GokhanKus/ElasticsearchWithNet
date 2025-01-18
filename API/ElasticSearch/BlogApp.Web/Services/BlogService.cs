@@ -1,6 +1,7 @@
 ﻿using BlogApp.Web.Models;
 using BlogApp.Web.Repositories;
 using BlogApp.Web.ViewModel;
+using System.Reflection.Metadata;
 
 namespace BlogApp.Web.Services
 {
@@ -17,6 +18,11 @@ namespace BlogApp.Web.Services
 			};
 			var isCreatedBlog = await _blogRepository.SaveChangesAsync(blog);
 			return isCreatedBlog != null;
+		}
+		public async Task<List<Blog>> SearchAsync(string searchText)
+		{
+			var filteredBlogList = await _blogRepository.SearchAsync(searchText);
+			return filteredBlogList;
 		}
 	}
 }

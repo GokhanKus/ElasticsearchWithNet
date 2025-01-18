@@ -249,13 +249,15 @@ namespace ElasticSearch.API.Repositories
 			var results = await _elasticClient.SearchAsync<ECommerce>(s => s.Index(indexName)
 				.Size(1000).Query(q => q
 					.Bool(b => b
-						.Should(m => m
-							.Match(m => m
-								.Field(f => f.CustomerFullName)
-								.Query(customerFullName))
-							.Prefix(p => p
-								.Field(f => f.CustomerFullName.Suffix("keyword"))
-								.Value(customerFullName))))));
+						.Should(
+							s => s
+								.Match(m => m
+									.Field(f => f.CustomerFullName)
+									.Query(customerFullName)),
+							s => s.Prefix(p => p
+									.Field(f => f.CustomerFullName.Suffix("keyword"))
+									.Value(customerFullName))))));
+
 			FillIdFields(results);
 			return results.Documents.ToImmutableList();
 		}
