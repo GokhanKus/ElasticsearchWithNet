@@ -8,7 +8,7 @@ namespace BlogApp.Web.Repositories
 	public class ECommerceRepository(ElasticsearchClient _elasticClient)
 	{
 		private const string IndexName = "kibana_sample_data_ecommerce";
-		public async Task<(List<ECommerce>,long totalItemCount)> SearchAsync(ECommerceSearchViewModel searchViewModel, int page, int pageSize)
+		public async Task<(List<ECommerce>, long totalItemCount)> SearchAsync(ECommerceSearchViewModel searchViewModel, int page, int pageSize)
 		{
 			List<Action<QueryDescriptor<ECommerce>>> queryLists = new();
 
