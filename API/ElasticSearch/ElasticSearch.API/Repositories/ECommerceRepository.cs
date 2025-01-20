@@ -1,7 +1,5 @@
 ﻿using Elastic.Clients.Elasticsearch;
-using Elastic.Clients.Elasticsearch.Nodes;
 using Elastic.Clients.Elasticsearch.QueryDsl;
-using ElasticSearch.API.Models;
 using ElasticSearch.API.Models.ECommerceModel;
 using System.Collections.Immutable;
 
