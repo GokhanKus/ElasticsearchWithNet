@@ -1,9 +1,9 @@
-﻿using BlogApp.Web.Models;
-using BlogApp.Web.ViewModel;
+﻿using ECommerceApp.Web.Models;
+using ECommerceApp.Web.ViewModel;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 
-namespace BlogApp.Web.Repositories
+namespace ECommerceApp.Web.Repositories
 {
 	public class ECommerceRepository(ElasticsearchClient _elasticClient)
 	{

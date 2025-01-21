@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogApp.Web.ViewModel
+namespace ECommerceApp.Web.ViewModel
 {
 	public class ECommerceSearchViewModel
 	{

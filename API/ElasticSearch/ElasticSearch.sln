@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch.API", "Elasti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.Web", "BlogApp.Web\BlogApp.Web.csproj", "{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceApp.Web", "ECommerceApp.Web\ECommerceApp.Web.csproj", "{10D41360-C748-4F45-A093-56A53C0DF242}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E88602E0-29C5-4B5C-8A0F-4BC81C59F4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10D41360-C748-4F45-A093-56A53C0DF242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10D41360-C748-4F45-A093-56A53C0DF242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10D41360-C748-4F45-A093-56A53C0DF242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10D41360-C748-4F45-A093-56A53C0DF242}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

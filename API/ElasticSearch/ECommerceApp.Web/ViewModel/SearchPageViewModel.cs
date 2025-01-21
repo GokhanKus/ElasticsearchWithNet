@@ -1,4 +1,4 @@
-﻿namespace BlogApp.Web.ViewModel
+﻿namespace ECommerceApp.Web.ViewModel
 {
 	//bu model içerisinde (SearchPageViewModel) sol taraftaki filteleme barlari (ECommerceSearchViewModel), datalar (List<ECommerceViewModel) ve pagination var
 	public class SearchPageViewModel

@@ -1,7 +1,7 @@
-﻿using BlogApp.Web.Repositories;
-using BlogApp.Web.ViewModel;
+﻿using ECommerceApp.Web.Repositories;
+using ECommerceApp.Web.ViewModel;
 
-namespace BlogApp.Web.Services
+namespace ECommerceApp.Web.Services
 {
 	public class ECommerceService(ECommerceRepository _eCommerceRepository)
 	{

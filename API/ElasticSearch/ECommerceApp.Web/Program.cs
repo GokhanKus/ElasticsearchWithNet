@@ -1,15 +1,16 @@
-using BlogApp.Web.Extensions;
-using BlogApp.Web.Repositories;
-using BlogApp.Web.Services;
+using ECommerceApp.Web.Extensions;
+using ECommerceApp.Web.Repositories;
+using ECommerceApp.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddElasticExt(builder.Configuration);
 
-builder.Services.AddScoped<BlogRepository>();
-builder.Services.AddScoped<BlogService>();
+builder.Services.AddScoped<ECommerceRepository>();
+builder.Services.AddScoped<ECommerceService>();
 
 var app = builder.Build();
 

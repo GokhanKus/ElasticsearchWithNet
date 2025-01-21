@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace BlogApp.Web.Models
+namespace ECommerceApp.Web.Models
 {
 	public class ECommerce
 	{

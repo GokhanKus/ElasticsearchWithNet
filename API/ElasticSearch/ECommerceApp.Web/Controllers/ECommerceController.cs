@@ -1,8 +1,8 @@
-﻿using BlogApp.Web.Services;
-using BlogApp.Web.ViewModel;
+﻿using ECommerceApp.Web.Services;
+using ECommerceApp.Web.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogApp.Web.Controllers
+namespace ECommerceApp.Web.Controllers
 {
 	public class ECommerceController(ECommerceService _eCommerceService) : Controller
 	{
@@ -14,7 +14,6 @@ namespace BlogApp.Web.Controllers
 			searchPageView.List = eCommerceList;
 			searchPageView.TotalItemCount = totalItemCount;
 			searchPageView.PageLinkCount = pageLinkCount;
-
 
 			return View(searchPageView);
 		}

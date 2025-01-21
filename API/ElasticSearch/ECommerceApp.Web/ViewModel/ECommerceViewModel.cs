@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BlogApp.Web.ViewModel
+﻿namespace ECommerceApp.Web.ViewModel
 {
 	public class ECommerceViewModel
 	{
