@@ -16,7 +16,7 @@ namespace BlogApp.Web.Controllers
 			searchPageView.PageLinkCount = pageLinkCount;
 
 
-			return View();
+			return View(searchPageView);
 		}
 	}
 }

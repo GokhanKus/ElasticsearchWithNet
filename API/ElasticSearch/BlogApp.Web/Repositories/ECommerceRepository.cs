@@ -12,38 +12,53 @@ namespace BlogApp.Web.Repositories
 		{
 			List<Action<QueryDescriptor<ECommerce>>> queryLists = new();
 
+			if (searchViewModel is null)
+			{
+				queryLists.Add(q => q.MatchAll(_ => { }));
+				return await ReturnFilteredItems(page, pageSize, queryLists);
+			}
 			if (!string.IsNullOrEmpty(searchViewModel.Category))
 			{
-				queryLists.Add((q) => q.Match(m => m
+				queryLists.Add(q => q.Match(m => m
 									.Field(f => f.Category)
 									.Query(searchViewModel.Category)));
 			}
 			if (!string.IsNullOrEmpty(searchViewModel.CustomerFullName))
 			{
-				queryLists.Add((q) => q.Match(m => m
-									.Field(f => f.Category)
+				queryLists.Add(q => q.Match(m => m
+									.Field(f => f.CustomerFullName)
 									.Query(searchViewModel.CustomerFullName)));
 			}
 			if (searchViewModel.OrderDateStart.HasValue)
 			{
-				queryLists.Add((q) => q.Range(r => r
+				queryLists.Add(q => q.Range(r => r
 									.DateRange(dr => dr
 									.Field(f => f.OrderDate)
 									.Gte(searchViewModel.OrderDateStart.Value))));
 			}
 			if (searchViewModel.OrderDateEnd.HasValue)
 			{
-				queryLists.Add((q) => q.Range(r => r
+				queryLists.Add(q => q.Range(r => r
 									.DateRange(dr => dr
 									.Field(f => f.OrderDate)
 									.Lte(searchViewModel.OrderDateEnd.Value))));
 			}
 			if (!string.IsNullOrEmpty(searchViewModel.Gender))
 			{
-				queryLists.Add((q) => q.Term(t => t
+				queryLists.Add(q => q.Term(t => t
 									.Field(f => f.Gender)
-									.Value(searchViewModel.Gender)));
+									.Value(searchViewModel.Gender).CaseInsensitive()));
 			}
+			if (!queryLists.Any())
+			{
+				queryLists.Add(q => q.MatchAll(_ => { }));
+			}
+			return await ReturnFilteredItems(page, pageSize, queryLists);
+		}
+
+		private async Task<(List<ECommerce>, long totalItemCount)> ReturnFilteredItems(int page, int pageSize, 
+			List<Action<QueryDescriptor<ECommerce>>> queryLists)
+		{
 			var pageFrom = (page - 1) * pageSize;
 
 			//title'a veya content'e gore arama yap

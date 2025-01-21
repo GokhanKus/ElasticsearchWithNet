@@ -1,12 +1,13 @@
 ﻿namespace BlogApp.Web.ViewModel
 {
+	//bu model içerisinde (SearchPageViewModel) sol taraftaki filteleme barlari (ECommerceSearchViewModel), datalar (List<ECommerceViewModel) ve pagination var
 	public class SearchPageViewModel
 	{
 		public long TotalItemCount { get; set; }
 		public int Page { get; set; } = 1;
 		public int PageSize { get; set; } = 10;
 		public long PageLinkCount { get; set; }
-		public List<ECommerceViewModel> List { get; set; }
+		public List<ECommerceViewModel>? List { get; set; }
 		public ECommerceSearchViewModel SearchViewModel { get; set; }
 
 		public int StartPage() => Page - 6 <= 0 ? 1 : Page - 6;
