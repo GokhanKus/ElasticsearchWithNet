@@ -10,6 +10,8 @@
 		public List<ECommerceViewModel>? List { get; set; }
 		public ECommerceSearchViewModel SearchViewModel { get; set; }
 
+		//ornegin toplam 50 sayfamız olsun client 20.sayfaya tıklarsa 14 15 16 17 18 19 20 21 22 23 24 25 26 sayfalarını paginationda gosterecek
+		//cunku 1den 50 ye kadar butun sayfaları gostermesini istemiyoruz
 		public int StartPage() => Page - 6 <= 0 ? 1 : Page - 6;
 		public long EndPage() => Page + 6 >= PageLinkCount ? PageLinkCount : Page + 6;
 
