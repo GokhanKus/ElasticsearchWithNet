@@ -31,7 +31,6 @@ Proje boyunca, Elastic.Clients.Elasticsearch kütüphanesi kullanılmıştır.
 #### Kullanılan Örnekler:
 - Ürün kayıtları oluşturulmuş (Product, ProductFeature modelleri).
 - CRUD operasyonlarının sonuçları Swagger üzerinden ve Kibana UI üzerinden test edilmiştir.
-BURAYA EKRAN GÖRÜNTÜSÜ GELECEKBURAYA EKRAN GÖRÜNTÜSÜ GELECEKBURAYA EKRAN GÖRÜNTÜSÜ GELECEKBURAYA EKRAN GÖRÜNTÜSÜ GELECEKBURAYA EKRAN GÖRÜNTÜSÜ GELECEKBURAYA EKRAN GÖRÜNTÜSÜ GELECEK
 
 ## **2 - Query-Operations-Elastic.Client.Elasticsearch**
 #### Açıklama:
